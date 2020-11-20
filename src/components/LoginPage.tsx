@@ -54,6 +54,7 @@ const LoginPage = () => {
     if (!UserStore.isLoggedIn) {
         return (
             <div className={classes.root}>
+                <Header />
                 <Grid container spacing={1} className={classes.grid}>
                     <Grid item xs={4} />
                     <Grid item xs={4}>

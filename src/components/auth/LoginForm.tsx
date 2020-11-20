@@ -12,6 +12,7 @@ import { Radio, RadioGroup } from '@material-ui/core';
 import axios, { AxiosResponse } from 'axios';
 import { runInAction } from 'mobx';
 import UserStore from '../../stores/UserStore';
+import { API } from '../../constants';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -59,7 +60,7 @@ const LoginForm: React.FC = () => {
     const doLogin = () => {
         runInAction(() => {
             axios
-                .post('https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/verifyUser', form)
+                .post(API + 'verifyUser', form)
                 .then(function(response: AxiosResponse) {
                     if (response.data.success) {
                         UserStore.isLoggedIn = true;

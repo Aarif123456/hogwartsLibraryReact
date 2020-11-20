@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { createMuiTheme, createStyles, makeStyles } from '@material-ui/core/styles';
 import { AppBar, Container, IconButton, List, ListItem, ListItemText, Menu, MenuItem, MuiThemeProvider, Toolbar } from '@material-ui/core';
-import green from '@material-ui/core/colors/green';
 import logo from '../resources/images/Home.png';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Link, useHistory } from 'react-router-dom';
@@ -14,7 +13,7 @@ import { API } from '../constants';
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: green[500]
+            main: '#36445E'
         },
         secondary: {
             main: blue[500]
@@ -55,7 +54,6 @@ const navLinks = [
     { title: 'reading list', path: '/ReadingList' },
     { title: 'contact', path: '/ContactUs' },
     { title: 'about', path: '/AboutUs' }
-    //{ title: 'log in', path: '/LoginPage' }
 ];
 
 const Header: React.FC = () => {

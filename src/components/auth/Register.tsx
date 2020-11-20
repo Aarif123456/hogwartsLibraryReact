@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { Grid, Paper, Radio, RadioGroup } from '@material-ui/core';
 import UserStore from '../../stores/UserStore';
+import Header from '../Header';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -66,6 +67,7 @@ export const Register: React.FC = () => {
 
     return (
         <div className={classes.root}>
+            <Header />
             <Grid container spacing={1} className={classes.grid}>
                 <Grid item xs={4} />
                 <Grid item xs={4}>
