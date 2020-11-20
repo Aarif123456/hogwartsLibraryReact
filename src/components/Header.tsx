@@ -49,11 +49,11 @@ const useStyles = makeStyles(
 );
 
 const navLinks = [
-    { title: 'browse catalogue', path: '/browse' },
-    { title: 'house fines', path: '/house' },
-    { title: 'reading list', path: '/list' },
-    { title: 'contact', path: '/contact' },
-    { title: 'about', path: '/about' }
+    { title: 'browse catalogue', path: '/BrowseCatalogue' },
+    { title: 'house fines', path: '/HouseFines' },
+    { title: 'reading list', path: '/ReadingList' },
+    { title: 'contact', path: '/ContactUs' },
+    { title: 'about', path: '/AboutUs' }
     //{ title: 'log in', path: '/LoginPage' }
 ];
 
