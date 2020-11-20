@@ -1,4 +1,4 @@
-import { makeObservable, observable } from 'mobx';
+import { makeObservable, observable, runInAction } from 'mobx';
 
 class UserStore {
     @observable loading = true;
@@ -7,17 +7,12 @@ class UserStore {
 
     constructor() {
         makeObservable(this);
-        if (localStorage.getItem('isLoggedIn') !== null) {
-            const isLoggedIn: boolean | null = JSON.parse(localStorage.getItem('isLoggedIn')!);
-            if (isLoggedIn !== null) {
-                this.isLoggedIn = isLoggedIn;
-            }
-        }
     }
 
     storeLoggedIn(success: boolean) {
-        this.isLoggedIn = success;
-        localStorage.setItem('isLoggedIn', JSON.stringify(success));
+        runInAction(() => {
+            this.isLoggedIn = success;
+        });
     }
 }
 

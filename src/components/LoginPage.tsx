@@ -39,14 +39,14 @@ const LoginPage = () => {
                 .catch(function(error) {
                     console.log(error);
                     UserStore.loading = false;
-                    UserStore.isLoggedIn = false;
+                    UserStore.storeLoggedIn(false);
                 });
 
             if (UserStore.isLoggedIn) {
                 UserStore.loading = false;
             } else {
                 UserStore.loading = false;
-                UserStore.isLoggedIn = false;
+                UserStore.storeLoggedIn(false);
             }
         });
     }, []);

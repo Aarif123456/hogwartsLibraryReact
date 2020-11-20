@@ -84,7 +84,7 @@ const Header: React.FC = () => {
                 .get(API + '/user/logout')
                 .then(function(response: AxiosResponse) {
                     if (response.status === 200) {
-                        UserStore.isLoggedIn = false;
+                        UserStore.storeLoggedIn(false);
                         UserStore.username = '';
                         UserStore.loading = true;
                     }
@@ -140,11 +140,11 @@ const Header: React.FC = () => {
                         </IconButton>
                         <List component='nav' aria-labelledby='main navigation' className={classes.navDisplayFlex}>
                             {navLinks.map(({ title, path }) => (
-                                <a href={path} key={title} className={classes.linkText}>
+                                <Link to={path} key={title} className={classes.linkText}>
                                     <ListItem button>
                                         <ListItemText primary={title} />
                                     </ListItem>
-                                </a>
+                                </Link>
                             ))}
                         </List>
                         <div className={classes.section}>

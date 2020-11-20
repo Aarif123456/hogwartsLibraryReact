@@ -63,7 +63,7 @@ const LoginForm: React.FC = () => {
                 .post(API + 'verifyUser', form)
                 .then(function(response: AxiosResponse) {
                     if (response.data.success) {
-                        UserStore.isLoggedIn = true;
+                        UserStore.storeLoggedIn(response.data.success);
                         UserStore.username = username;
                         console.log(response.data);
                     } else {

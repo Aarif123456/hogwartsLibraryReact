@@ -62,7 +62,7 @@ export function BrowseCatalogue() {
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchKeyword(event.target.value);
-        if (searchType != '') {
+        if (searchType !== '') {
             doSearch();
         }
     };
