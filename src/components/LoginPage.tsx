@@ -5,6 +5,8 @@ import UserStore from '../stores/UserStore';
 import { observer } from 'mobx-react';
 import { createStyles, Grid, makeStyles, Paper, Theme } from '@material-ui/core';
 import { runInAction } from 'mobx';
+import { API } from '../constants';
+import Header from './Header';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,10 +31,10 @@ const LoginPage = () => {
     useEffect(() => {
         runInAction(() => {
             axios
-                .get('https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/user/isLoggedIn')
+                .get(API + '/user/isLoggedIn')
                 .then((response: AxiosResponse) => {
                     console.log(response.data);
-                    UserStore.isLoggedIn = response.data;
+                    UserStore.storeLoggedIn(response.data);
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -53,18 +55,23 @@ const LoginPage = () => {
         return (
             <div className={classes.root}>
                 <Grid container spacing={1} className={classes.grid}>
-                    <Grid item xs={4}></Grid>
+                    <Grid item xs={4} />
                     <Grid item xs={4}>
                         <Paper className={classes.paper}>
                             <LoginForm />
                         </Paper>
                     </Grid>
-                    <Grid item xs={4}></Grid>
+                    <Grid item xs={4} />
                 </Grid>
             </div>
         );
     }
-    return <div className='container'>No Bueno</div>;
+    return (
+        <>
+            <Header />
+            <div className='container'>No Bueno</div>
+        </>
+    );
 };
 
 export default observer(LoginPage);

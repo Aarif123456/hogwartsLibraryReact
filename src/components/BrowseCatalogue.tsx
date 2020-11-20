@@ -1,14 +1,16 @@
 import React from 'react';
 import './App.css';
+import Header from './Header';
 
-function BrowseCatalogue() {
+export function BrowseCatalogue() {
     return (
-        <div className='App'>
-            <header className='App-header'>
-                <p>Browse Catalogue</p>
-            </header>
-        </div>
+        <>
+            <Header />
+            <div className='App'>
+                <header className='App-header'>
+                    <p>Browse Catalogue</p>
+                </header>
+            </div>
+        </>
     );
 }
-
-export default BrowseCatalogue;

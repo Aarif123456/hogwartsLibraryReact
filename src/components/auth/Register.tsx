@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const Register: React.FC = () => {
+export const Register: React.FC = () => {
     const classes = useStyles();
     const [userType, setUserType] = useState('user');
     const [errorText, setErrorText] = useState('');
@@ -67,7 +67,7 @@ const Register: React.FC = () => {
     return (
         <div className={classes.root}>
             <Grid container spacing={1} className={classes.grid}>
-                <Grid item xs={4}></Grid>
+                <Grid item xs={4} />
                 <Grid item xs={4}>
                     <Paper className={classes.paper}>
                         <Container component='main' maxWidth='xs'>
@@ -121,7 +121,7 @@ const Register: React.FC = () => {
                                     />
                                     <TextField
                                         variant='outlined'
-                                        error={errorText.length === 0 ? false : true}
+                                        error={errorText.length !== 0}
                                         margin='normal'
                                         required
                                         fullWidth
@@ -144,10 +144,8 @@ const Register: React.FC = () => {
                         </Container>
                     </Paper>
                 </Grid>
-                <Grid item xs={4}></Grid>
+                <Grid item xs={4} />
             </Grid>
         </div>
     );
 };
-
-export default Register;

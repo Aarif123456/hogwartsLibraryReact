@@ -1,14 +1,16 @@
 import React from 'react';
 import './App.css';
+import Header from './Header';
 
-function HouseFines() {
+export function HouseFines() {
     return (
-        <div className='App'>
-            <header className='App-header'>
-                <p>House Fines</p>
-            </header>
-        </div>
+        <>
+            <Header />
+            <div className='App'>
+                <header className='App-header'>
+                    <p>House Fines</p>
+                </header>
+            </div>
+        </>
     );
 }
-
-export default HouseFines;

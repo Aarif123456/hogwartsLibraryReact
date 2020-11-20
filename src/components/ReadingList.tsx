@@ -1,14 +1,16 @@
 import React from 'react';
 import './App.css';
+import Header from './Header';
 
-function ReadingList() {
+export function ReadingList() {
     return (
-        <div className='App'>
-            <header className='App-header'>
-                <p>Reading List</p>
-            </header>
-        </div>
+        <>
+            <Header />
+            <div className='App'>
+                <header className='App-header'>
+                    <p>Reading List</p>
+                </header>
+            </div>
+        </>
     );
 }
-
-export default ReadingList;

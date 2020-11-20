@@ -1,13 +1,17 @@
 import React from 'react';
 import './App.css';
+import Header from './Header';
 
-function ContactUs() {
+export function ContactUs() {
     return (
-        <div className='App'>
-            <header className='App-header'>
-                <p>Contact Us</p>
-            </header>
-        </div>
+        <>
+            <Header />
+            <div className='App'>
+                <header className='App-header'>
+                    <p>Contact Us</p>
+                </header>
+            </div>
+        </>
     );
 }
 

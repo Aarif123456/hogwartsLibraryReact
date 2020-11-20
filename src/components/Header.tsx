@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { makeStyles, createStyles, createMuiTheme } from '@material-ui/core/styles';
-import { AppBar, Toolbar, IconButton, List, ListItem, ListItemText, Container, MuiThemeProvider, Menu, MenuItem } from '@material-ui/core';
+import React, { useState } from 'react';
+import { createMuiTheme, createStyles, makeStyles } from '@material-ui/core/styles';
+import { AppBar, Container, IconButton, List, ListItem, ListItemText, Menu, MenuItem, MuiThemeProvider, Toolbar } from '@material-ui/core';
 import green from '@material-ui/core/colors/green';
 import logo from '../resources/images/Home.png';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -9,6 +9,7 @@ import UserStore from '../stores/UserStore';
 import axios, { AxiosResponse } from 'axios';
 import { runInAction } from 'mobx';
 import { blue } from '@material-ui/core/colors';
+import { API } from '../constants';
 
 const theme = createMuiTheme({
     palette: {
@@ -59,7 +60,7 @@ const navLinks = [
 
 const Header: React.FC = () => {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -82,7 +83,7 @@ const Header: React.FC = () => {
         setAnchorEl(null);
         runInAction(() => {
             axios
-                .get('https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/user/logout')
+                .get(API + '/user/logout')
                 .then(function(response: AxiosResponse) {
                     if (response.status === 200) {
                         UserStore.isLoggedIn = false;
@@ -166,4 +167,5 @@ const Header: React.FC = () => {
         </MuiThemeProvider>
     );
 };
+
 export default Header;
