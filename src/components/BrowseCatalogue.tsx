@@ -23,12 +23,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const columns: ColDef[] = [
-    { field: 'isbn', headerName: 'Book ISBN', width: 180 },
-    { field: 'title', headerName: 'Title', width: 350 },
+    { field: 'bookISBN', headerName: 'Book ISBN', width: 180 },
+    { field: 'bookName', headerName: 'Title', width: 350 },
     { field: 'author', headerName: 'Author', width: 200 },
     { field: 'pages', headerName: 'Pages', width: 100 },
     { field: 'edition', headerName: 'Edition', width: 130 },
-    { field: 'status', headerName: 'Status', width: 100 },
+    { field: 'express', headerName: 'Status', width: 100 },
     { field: 'category', headerName: 'Category', width: 150 },
     {
         field: 'holds',
@@ -40,12 +40,12 @@ const columns: ColDef[] = [
 let rows = [
     {
         id: 1,
-        isbn: '',
-        title: '',
+        bookISBN: '',
+        bookName: '',
         author: '',
         pages: null,
         edition: '',
-        status: null,
+        express: null,
         category: '',
         holds: null
     }
@@ -55,6 +55,7 @@ export function BrowseCatalogue() {
     const classes = useStyles();
     const [searchType, setSearchType] = React.useState('');
     const [searchKeyword, setSearchKeyword] = React.useState('');
+    const [dataRows, setDataRows] = React.useState(rows);
 
     const changeUserType = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSearchType(event.target.value as string);
@@ -77,10 +78,28 @@ export function BrowseCatalogue() {
         runInAction(() => {
             Axios.post(API + 'library/searchCatalogue', form)
                 .then(function(response: AxiosResponse) {
-                    if (response.data) {
+                    if (response.data !== 'No rows') {
                         console.log(response.data);
+                        rows = response.data;
+                        rows.forEach(function(item, index) {
+                            item.id = index + 1;
+                        });
+                        setDataRows(rows);
                     } else {
-                        // console.log('failed');
+                        rows = [
+                            {
+                                id: 1,
+                                bookISBN: '',
+                                bookName: '',
+                                author: '',
+                                pages: null,
+                                edition: '',
+                                express: null,
+                                category: '',
+                                holds: null
+                            }
+                        ];
+                        setDataRows(rows);
                         console.log(response.data);
                     }
                 })
@@ -103,9 +122,9 @@ export function BrowseCatalogue() {
                 <Select labelId='select-user-type' id='select-user-type' value={searchType} onChange={changeUserType}>
                     <MenuItem value='title'>Title</MenuItem>
                     <MenuItem value='author'>Author</MenuItem>
-                    <MenuItem value='isbn'>ISBN</MenuItem>
+                    <MenuItem value='ISBN'>ISBN</MenuItem>
                     <MenuItem value='keyword'>Keyword</MenuItem>
-                    <MenuItem value='tags'>Tags</MenuItem>
+                    <MenuItem value='tag'>Tags</MenuItem>
                 </Select>
             </FormControl>
             <TextField
@@ -116,8 +135,8 @@ export function BrowseCatalogue() {
                 className={classes.textField}
                 onChange={handleSearch}
             />
-            <div style={{ height: 400, width: '100%' }}>
-                <DataGrid rows={rows} columns={columns} pageSize={6} checkboxSelection />
+            <div style={{ height: 650, width: '100%' }}>
+                <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />
             </div>
         </>
     );
