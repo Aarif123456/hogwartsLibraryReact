@@ -37,6 +37,7 @@ const LoginForm: React.FC = () => {
     const [userType, setUserType] = useState('user');
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [errorText, setErrorText] = useState('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserType((event.target as HTMLInputElement).value);
@@ -44,10 +45,12 @@ const LoginForm: React.FC = () => {
 
     const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword((event.target as HTMLInputElement).value);
+        setErrorText('');
     };
 
     const handleUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserName((event.target as HTMLInputElement).value);
+        setErrorText('');
     };
 
     const FormData = require('form-data');
@@ -67,11 +70,12 @@ const LoginForm: React.FC = () => {
                         UserStore.username = username;
                         console.log(response.data);
                     } else {
-                        // console.log('failed');
+                        setErrorText('Invalid Username or Password');
                         console.log(response.data);
                     }
                 })
                 .catch(function(error) {
+                    setErrorText('Invalid Username or Password');
                     console.log(error);
                 });
         });
@@ -88,12 +92,14 @@ const LoginForm: React.FC = () => {
                     <TextField
                         variant='outlined'
                         margin='normal'
+                        error={errorText.length !== 0}
                         required
                         fullWidth
                         id='username'
                         label='Username'
                         name='username'
                         autoComplete='username'
+                        helperText={errorText}
                         autoFocus
                         onChange={handleUserName}
                     />
