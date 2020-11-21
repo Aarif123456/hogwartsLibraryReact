@@ -24,7 +24,6 @@ export const HouseFines: FC = () => {
                         fineDataReceived.push([houseData.house, Number(houseData.total)]);
                     }
                     setFineData(fineDataReceived);
-                    console.log(fineDataReceived);
                 })
                 .catch(function(error) {
                     console.error(error);
