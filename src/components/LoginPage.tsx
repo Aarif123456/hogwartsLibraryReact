@@ -36,7 +36,7 @@ const LoginPage = () => {
             axios
                 .get(API + '/user/isLoggedIn')
                 .then((response: AxiosResponse) => {
-                    console.log(response.data);
+                    console.log('Here: ' + response.data);
                     UserStore.storeLoggedIn(response.data);
                 })
                 .catch(function(error) {
@@ -62,6 +62,7 @@ const LoginPage = () => {
                     if (response.status === 200) {
                         UserStore.storeLoggedIn(false);
                         UserStore.username = '';
+                        UserStore.usertype = '';
                         UserStore.loading = true;
                     }
                 })

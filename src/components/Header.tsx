@@ -48,7 +48,7 @@ const useStyles = makeStyles(
     })
 );
 
-const navLinks = [
+let navLinks = [
     { title: 'browse catalogue', path: '/BrowseCatalogue' },
     { title: 'house fines', path: '/HouseFines' },
     { title: 'reading list', path: '/ReadingList' },
@@ -113,7 +113,51 @@ const Header: React.FC = () => {
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         );
+        if (UserStore.usertype === 'librarian') {
+            navLinks = [
+                { title: 'check out', path: '/Checkout' },
+                { title: 'returns', path: '/Returns' },
+                { title: 'holds', path: '/Holds' },
+                { title: 'fines', path: '/Fines' },
+                { title: 'request list', path: '/RequestList' },
+                { title: 'reserve books', path: '/ReserveBooksL' }
+            ];
+        } else if (UserStore.usertype === 'student') {
+            navLinks = [
+                { title: 'browse catalogue', path: '/BrowseCatalogue' },
+                { title: 'checked out', path: '/CheckedOut' },
+                { title: 'holds', path: '/Holds' },
+                { title: 'fines', path: '/Fines' },
+                { title: 'submit request', path: '/Submit Request' },
+                { title: 'reserve books', path: '/ReserveBooksS' }
+            ];
+        } else if (UserStore.usertype === 'professor') {
+            navLinks = [
+                { title: 'browse catalogue', path: '/BrowseCatalogue' },
+                { title: 'checked out', path: '/CheckedOut' },
+                { title: 'holds', path: '/Holds' },
+                { title: 'fines', path: '/Fines' },
+                { title: 'submit request', path: '/Submit Request' },
+                { title: 'reserve books', path: '/ReserveBooksS' }
+            ];
+        } else if (UserStore.usertype === 'headmaster') {
+            navLinks = [
+                { title: 'browse catalogue', path: '/BrowseCatalogue' },
+                { title: 'manage librarians', path: '/ManageLibrarians' },
+                { title: 'manage courses', path: '/ManageCourses' },
+                { title: 'manage enrollments', path: '/ManageEnrollments' },
+                { title: 'manage requests', path: '/ManageRequests' },
+                { title: 'passwords', path: '/Passwords' }
+            ];
+        }
     } else {
+        navLinks = [
+            { title: 'browse catalogue', path: '/BrowseCatalogue' },
+            { title: 'house fines', path: '/HouseFines' },
+            { title: 'reading list', path: '/ReadingList' },
+            { title: 'contact', path: '/ContactUs' },
+            { title: 'about', path: '/AboutUs' }
+        ];
         renderMenu = (
             <Menu
                 anchorEl={anchorEl}
@@ -132,7 +176,7 @@ const Header: React.FC = () => {
         <MuiThemeProvider theme={theme}>
             <AppBar position='static'>
                 <Toolbar>
-                    <Container maxWidth='md' className={classes.navbarDisplayFlex}>
+                    <Container maxWidth='xl' className={classes.navbarDisplayFlex}>
                         <IconButton edge='start' color='inherit' aria-label='home'>
                             <Link to='/'>
                                 <img src={logo} className='App-logo' alt='logo' />

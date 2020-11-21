@@ -4,6 +4,7 @@ class UserStore {
     @observable loading = true;
     @observable isLoggedIn = false;
     @observable username = '';
+    @observable usertype = '';
 
     constructor() {
         makeObservable(this);
