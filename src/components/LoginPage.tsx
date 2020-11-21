@@ -3,7 +3,7 @@ import LoginForm from './auth/LoginForm';
 import axios, { AxiosResponse } from 'axios';
 import UserStore from '../stores/UserStore';
 import { observer } from 'mobx-react';
-import { createStyles, Grid, makeStyles, Paper, Theme } from '@material-ui/core';
+import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import { runInAction } from 'mobx';
 import { API } from '../constants';
 import Header from './Header';
@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(10),
             textAlign: 'center',
             alignItems: 'center'
+        },
+        submit: {
+            margin: theme.spacing(3, 0, 2)
         }
     })
 );
@@ -51,6 +54,23 @@ const LoginPage = () => {
         });
     }, []);
 
+    const doLogout = () => {
+        runInAction(() => {
+            axios
+                .get(API + '/user/logout')
+                .then(function(response: AxiosResponse) {
+                    if (response.status === 200) {
+                        UserStore.storeLoggedIn(false);
+                        UserStore.username = '';
+                        UserStore.loading = true;
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        });
+    };
+
     if (!UserStore.isLoggedIn) {
         return (
             <div className={classes.root}>
@@ -68,10 +88,28 @@ const LoginPage = () => {
         );
     }
     return (
-        <>
+        <div className={classes.root}>
             <Header />
-            <div className='container'>No Bueno</div>
-        </>
+            <Grid container spacing={1} className={classes.grid}>
+                <Grid item xs={4} />
+                <Grid item xs={4}>
+                    <Paper className={classes.paper}>
+                        <Container component='main' maxWidth='xs'>
+                            <CssBaseline />
+                            <div className={classes.paper}>
+                                <Typography component='h1' variant='h5'>
+                                    Already Signed In! Would you like to Sign Out?
+                                </Typography>
+                                <Button fullWidth variant='contained' color='primary' className={classes.submit} onClick={doLogout}>
+                                    Sign Out
+                                </Button>
+                            </div>
+                        </Container>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4} />
+            </Grid>
+        </div>
     );
 };
 
