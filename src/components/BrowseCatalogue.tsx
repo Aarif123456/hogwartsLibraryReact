@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import { DataGrid, ColDef } from '@material-ui/data-grid';
-import { createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField, Theme } from '@material-ui/core';
+import { Button, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField, Theme } from '@material-ui/core';
 import { runInAction } from 'mobx';
 import Axios, { AxiosResponse } from 'axios';
 import { API } from '../constants';
@@ -137,6 +137,9 @@ export const BrowseCatalogue: React.FC = () => {
                 className={classes.textField}
                 onChange={handleSearch}
             />
+            <Button variant='contained' color='primary' className={classes.selectEmpty}>
+                Hold
+            </Button>
             <div style={{ height: 650, width: '100%' }}>
                 <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />
             </div>
