@@ -62,7 +62,7 @@ export const BrowseCatalogue: React.FC = () => {
     form.append('searchType', searchType);
     form.append('searchWord', searchKeyword);
 
-    const changeUserType = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const changeSearchType = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSearchType(event.target.value as string);
     };
 
@@ -121,7 +121,7 @@ export const BrowseCatalogue: React.FC = () => {
             </div>
             <FormControl className={classes.formControl}>
                 <InputLabel id='select-user-type'>User Type</InputLabel>
-                <Select labelId='select-user-type' id='select-user-type' value={searchType} onChange={changeUserType}>
+                <Select labelId='select-user-type' id='select-user-type' value={searchType} onChange={changeSearchType}>
                     <MenuItem value='title'>Title</MenuItem>
                     <MenuItem value='author'>Author</MenuItem>
                     <MenuItem value='ISBN'>ISBN</MenuItem>

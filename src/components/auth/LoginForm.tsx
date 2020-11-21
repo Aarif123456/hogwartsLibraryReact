@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { Radio, RadioGroup } from '@material-ui/core';
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import axios, { AxiosResponse } from 'axios';
 import { runInAction } from 'mobx';
 import UserStore from '../../stores/UserStore';
 import { API } from '../../constants';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -28,26 +28,33 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         submit: {
             margin: theme.spacing(3, 0, 2)
+        },
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 120
         }
     })
 );
 
 const LoginForm: React.FC = () => {
     const classes = useStyles();
-    const [userType, setUserType] = useState('user');
+    const [userType, setUserType] = useState('');
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUserType((event.target as HTMLInputElement).value);
+    const [errorText, setErrorText] = useState('');
+    const history = useHistory();
+    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setUserType(event.target.value as string);
     };
 
     const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword((event.target as HTMLInputElement).value);
+        setErrorText('');
     };
 
     const handleUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserName((event.target as HTMLInputElement).value);
+        setErrorText('');
     };
 
     const FormData = require('form-data');
@@ -65,17 +72,22 @@ const LoginForm: React.FC = () => {
                     if (response.data.success) {
                         UserStore.storeLoggedIn(response.data.success);
                         UserStore.username = username;
+                        UserStore.usertype = userType;
                         console.log(response.data);
+                        history.push('/');
                     } else {
-                        // console.log('failed');
+                        setErrorText('Invalid Username or Password');
                         console.log(response.data);
                     }
                 })
                 .catch(function(error) {
+                    setErrorText('Invalid Username or Password');
                     console.log(error);
                 });
         });
     };
+
+    useEffect(() => {}, []);
 
     return (
         <Container component='main' maxWidth='xs'>
@@ -88,12 +100,14 @@ const LoginForm: React.FC = () => {
                     <TextField
                         variant='outlined'
                         margin='normal'
+                        error={errorText.length !== 0}
                         required
                         fullWidth
                         id='username'
                         label='Username'
                         name='username'
                         autoComplete='username'
+                        helperText={errorText}
                         autoFocus
                         onChange={handleUserName}
                     />
@@ -109,10 +123,17 @@ const LoginForm: React.FC = () => {
                         autoComplete='current-password'
                         onChange={handlePassword}
                     />
-                    <RadioGroup aria-label='userType' name='userTypes' value={userType} onChange={handleChange} row>
-                        <FormControlLabel value='user' control={<Radio />} label='User' />
-                        <FormControlLabel value='librarian' control={<Radio />} label='Librarian' />
-                    </RadioGroup>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id='select-user-type' required>
+                            User Type
+                        </InputLabel>
+                        <Select labelId='select-user-type' id='select-user-type' value={userType} onChange={handleChange} required>
+                            <MenuItem value='student'>Student</MenuItem>
+                            <MenuItem value='librarian'>Librarian</MenuItem>
+                            <MenuItem value='professor'>Professor</MenuItem>
+                            <MenuItem value='headmaster'>Headmaster</MenuItem>
+                        </Select>
+                    </FormControl>
                     <Button fullWidth variant='contained' color='primary' className={classes.submit} onClick={doLogin}>
                         Sign In
                     </Button>
