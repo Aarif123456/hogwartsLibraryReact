@@ -1,8 +1,8 @@
 import { ColDef, DataGrid } from '@material-ui/data-grid';
-import Axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { runInAction } from 'mobx';
 import React, { useEffect } from 'react';
-import { API } from '../constants';
+import { API, instance } from '../constants';
 import UserStore from '../stores/UserStore';
 import './App.css';
 import Header from './Header';
@@ -32,17 +32,19 @@ const Fines = () => {
         setDataRows(rows);
         runInAction(() => {
             if (UserStore.usertype === 'student' || UserStore.usertype === 'professor') {
-                Axios.post(API + '/user/userFines', { listType: 'getOutstandingFineOnAccount' })
+                instance
+                    .post(API + '/user/userFines', { listType: 'getTransactionWithFines' })
                     .then((response: AxiosResponse) => {
-                        console.log('Here: ' + response.data);
+                        console.log(response.data);
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
             } else {
-                Axios.post(API + '/user/userFines', { listType: 'getTransactionWithFines' })
+                instance
+                    .post(API + '/user/userFines', { listType: 'getOutstandingFineOnAccount' })
                     .then((response: AxiosResponse) => {
-                        console.log('Here: ' + response.data);
+                        console.log(response.data);
                     })
                     .catch(function(error) {
                         console.log(error);
