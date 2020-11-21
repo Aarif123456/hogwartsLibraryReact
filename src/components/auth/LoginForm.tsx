@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,10 +8,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { runInAction } from 'mobx';
 import UserStore from '../../stores/UserStore';
-import { API } from '../../constants';
+import { instance } from '../../constants';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -66,8 +66,8 @@ const LoginForm: React.FC = () => {
 
     const doLogin = () => {
         runInAction(() => {
-            axios
-                .post(API + 'verifyUser', form)
+            instance
+                .post('verifyUser', form)
                 .then(function(response: AxiosResponse) {
                     if (response.data.success) {
                         UserStore.storeLoggedIn(response.data.success);
@@ -86,8 +86,6 @@ const LoginForm: React.FC = () => {
                 });
         });
     };
-
-    useEffect(() => {}, []);
 
     return (
         <Container component='main' maxWidth='xs'>
