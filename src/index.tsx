@@ -3,18 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import App from './components/App';
-import { FirstPage } from './components';
 import LoginPage from './components/LoginPage';
 import { AboutUs, ContactUs, BrowseCatalogue, ReadingList, HouseFines } from './components';
 import { Register } from './components/auth/Register';
+import { Fines } from './components/Fines';
+import { CheckedOut } from './components/CheckedOut';
+import { Holds } from './components/Holds';
+import { RequestList } from './components/RequestList';
+import { ReserveBooksS } from './components/ReserveBooksS';
+import { ReserveBooksL } from './components/ReserveBooksL';
+import { Returns } from './components/Returns';
+import { SubmitRequests } from './components/SubmitRequests';
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <Switch>
-                <Route path='/firstPage'>
-                    <FirstPage />
-                </Route>
                 <Route exact path='/LoginPage'>
                     <LoginPage />
                 </Route>
@@ -36,8 +40,32 @@ ReactDOM.render(
                 <Route exact path='/HouseFines'>
                     <HouseFines />
                 </Route>
+                <Route exact path='/Fines'>
+                    <Fines />
+                </Route>
+                <Route exact path='/CheckedOut'>
+                    <CheckedOut />
+                </Route>
+                <Route exact path='/Holds'>
+                    <Holds />
+                </Route>
+                <Route exact path='/RequestList'>
+                    <RequestList />
+                </Route>
+                <Route exact path='/ReserveBooksS'>
+                    <ReserveBooksS />
+                </Route>
+                <Route exact path='/ReserveBooksL'>
+                    <ReserveBooksL />
+                </Route>
                 <Route exact path='/'>
                     <App />
+                </Route>
+                <Route exact path='/Returns'>
+                    <Returns />
+                </Route>
+                <Route exact path='/SubmitRequests'>
+                    <SubmitRequests />
                 </Route>
             </Switch>
         </BrowserRouter>

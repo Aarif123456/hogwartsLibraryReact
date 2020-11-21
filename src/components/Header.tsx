@@ -128,7 +128,7 @@ const Header: React.FC = () => {
                 { title: 'checked out', path: '/CheckedOut' },
                 { title: 'holds', path: '/Holds' },
                 { title: 'fines', path: '/Fines' },
-                { title: 'submit request', path: '/Submit Request' },
+                { title: 'submit request', path: '/SubmitRequest' },
                 { title: 'reserve books', path: '/ReserveBooksS' }
             ];
         } else if (UserStore.usertype === 'professor') {
@@ -137,8 +137,8 @@ const Header: React.FC = () => {
                 { title: 'checked out', path: '/CheckedOut' },
                 { title: 'holds', path: '/Holds' },
                 { title: 'fines', path: '/Fines' },
-                { title: 'submit request', path: '/Submit Request' },
-                { title: 'reserve books', path: '/ReserveBooksS' }
+                { title: 'submit request', path: '/SubmitRequest' },
+                { title: 'reserve books', path: '/ReserveBooksP' }
             ];
         } else if (UserStore.usertype === 'headmaster') {
             navLinks = [
