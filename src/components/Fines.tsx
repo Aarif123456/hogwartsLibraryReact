@@ -1,16 +1,69 @@
-import React from 'react';
+import { ColDef, DataGrid } from '@material-ui/data-grid';
+import Axios, { AxiosResponse } from 'axios';
+import { runInAction } from 'mobx';
+import React, { useEffect } from 'react';
+import { API } from '../constants';
+import UserStore from '../stores/UserStore';
 import './App.css';
 import Header from './Header';
 
-export function Fines() {
+const columns: ColDef[] = [
+    { field: 'id', headerName: 'Transaction ID', width: 180 },
+    { field: 'bookName', headerName: 'Title', width: 350 },
+    { field: 'author', headerName: 'Author', width: 200 },
+    { field: 'date', headerName: 'Return/ Lost Date', width: 200 },
+    { field: 'fine', headerName: 'Fine', width: 130 }
+];
+
+let rows = [
+    {
+        id: 1,
+        bookName: '',
+        author: '',
+        date: new Date(),
+        fine: 0.0
+    }
+];
+
+const Fines = () => {
+    const [dataRows, setDataRows] = React.useState(rows);
+
+    useEffect(() => {
+        setDataRows(rows);
+        runInAction(() => {
+            if (UserStore.usertype === 'student' || UserStore.usertype === 'professor') {
+                Axios.post(API + '/user/userFines', { listType: 'getOutstandingFineOnAccount' })
+                    .then((response: AxiosResponse) => {
+                        console.log('Here: ' + response.data);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            } else {
+                Axios.post(API + '/user/userFines', { listType: 'getTransactionWithFines' })
+                    .then((response: AxiosResponse) => {
+                        console.log('Here: ' + response.data);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
+        });
+    }, []);
+
     return (
         <>
             <Header />
             <div className='App'>
                 <header className='App-header'>
-                    <p>Fines</p>
+                    <h3>Fines</h3>
                 </header>
+            </div>
+            <div style={{ height: 650, width: '100%' }}>
+                <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />
             </div>
         </>
     );
-}
+};
+
+export default Fines;

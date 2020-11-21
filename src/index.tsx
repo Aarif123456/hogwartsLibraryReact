@@ -6,7 +6,7 @@ import App from './components/App';
 import LoginPage from './components/LoginPage';
 import { AboutUs, ContactUs, BrowseCatalogue, ReadingList, HouseFines } from './components';
 import { Register } from './components/auth/Register';
-import { Fines } from './components/Fines';
+import Fines from './components/Fines';
 import { CheckedOut } from './components/CheckedOut';
 import { Holds } from './components/Holds';
 import { RequestList } from './components/RequestList';
