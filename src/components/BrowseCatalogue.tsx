@@ -51,11 +51,16 @@ let rows = [
     }
 ];
 
-export function BrowseCatalogue() {
+export const BrowseCatalogue: React.FC = () => {
     const classes = useStyles();
     const [searchType, setSearchType] = React.useState('');
     const [searchKeyword, setSearchKeyword] = React.useState('');
     const [dataRows, setDataRows] = React.useState(rows);
+
+    const FormData = require('form-data');
+    const form = new FormData();
+    form.append('searchType', searchType);
+    form.append('searchWord', searchKeyword);
 
     const changeUserType = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSearchType(event.target.value as string);
@@ -63,16 +68,7 @@ export function BrowseCatalogue() {
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchKeyword(event.target.value);
-        if (searchType !== '') {
-            doSearch();
-        }
     };
-
-    const FormData = require('form-data');
-
-    const form = new FormData();
-    form.append('searchType', searchType);
-    form.append('searchWord', searchKeyword);
 
     const doSearch = () => {
         runInAction(() => {
@@ -109,6 +105,12 @@ export function BrowseCatalogue() {
         });
     };
 
+    React.useEffect(() => {
+        if (searchType !== '') {
+            doSearch();
+        }
+    }, [searchKeyword]);
+
     return (
         <>
             <Header />
@@ -140,4 +142,4 @@ export function BrowseCatalogue() {
             </div>
         </>
     );
-}
+};
