@@ -5,7 +5,6 @@ import { Button, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { runInAction } from 'mobx';
 import { instance } from '../constants';
 import { AxiosResponse } from 'axios';
-import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,11 +60,11 @@ interface Book {
     holds?: number | null;
 }
 
+let message = '';
+
 export const Holds: React.FC = () => {
     const [dataRows, setDataRows] = React.useState<Book[]>(rows);
     const [selections, setSelection] = React.useState<RowId[]>([]);
-    let message = '';
-    const history = useHistory();
 
     const cancelHoldBooks = () => {
         console.log(selections);
@@ -75,9 +74,6 @@ export const Holds: React.FC = () => {
             console.log(dataRows[select]);
             cancelHoldBook(dataRows[select]);
         }
-        history.push('/Holds');
-        alert(message);
-        message = '';
     };
     const cancelHoldBook = (book: Book) => {
         const holdID = book.holdID;
@@ -85,7 +81,7 @@ export const Holds: React.FC = () => {
         holdFormData.append('holdID', String(holdID));
         console.log(book);
         instance
-            .post('library/cancelHoldBook', holdFormData)
+            .post('library/cancelHoldBooks', holdFormData)
             .then(function(response: AxiosResponse) {
                 console.log(response.data);
                 message = response.data;
@@ -97,7 +93,6 @@ export const Holds: React.FC = () => {
     };
 
     useEffect(() => {
-        setDataRows(rows);
         runInAction(() => {
             instance
                 .post('user/userHolds')
@@ -131,7 +126,11 @@ export const Holds: React.FC = () => {
                     console.log(error);
                 });
         });
-    }, []);
+        if (message !== '') {
+            alert(message);
+            message = '';
+        }
+    }, [cancelHoldBooks]);
 
     const classes = useStyles();
     return (

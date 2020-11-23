@@ -4,7 +4,6 @@ import { DataGrid, ColDef, RowId } from '@material-ui/data-grid';
 import { Button, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField, Theme } from '@material-ui/core';
 import { AxiosResponse } from 'axios';
 import { instance } from '../constants';
-import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -62,14 +61,15 @@ interface Book {
     category: string;
     holds?: number | null;
 }
+
+let message = '';
+
 export const BrowseCatalogue: React.FC = () => {
     const classes = useStyles();
     const [searchType, setSearchType] = React.useState('');
     const [searchKeyword, setSearchKeyword] = React.useState('');
     const [dataRows, setDataRows] = React.useState<Book[]>(rows);
     const [selections, setSelection] = React.useState<RowId[]>([]);
-    let message = '';
-    const history = useHistory();
     const FormData = require('form-data');
     const form = new FormData();
     form.append('searchType', searchType);
@@ -125,9 +125,6 @@ export const BrowseCatalogue: React.FC = () => {
             console.log(dataRows[select]);
             holdBook(dataRows[select]);
         }
-        history.push('/BrowseCatalogue');
-        alert(message);
-        message = '';
     };
     const holdBook = (book: Book) => {
         const bookISBN = book.bookISBN;
@@ -149,7 +146,11 @@ export const BrowseCatalogue: React.FC = () => {
         if (searchType !== '') {
             doSearch();
         }
-    }, [searchKeyword]);
+        if (message !== '') {
+            alert(message);
+            message = '';
+        }
+    }, [searchKeyword, holdBooks]);
 
     return (
         <>
