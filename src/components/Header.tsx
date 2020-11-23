@@ -127,9 +127,9 @@ const Header: React.FC = () => {
                 { title: 'browse catalogue', path: '/BrowseCatalogue' },
                 { title: 'checked out', path: '/CheckedOut' },
                 { title: 'holds', path: '/Holds' },
-                { title: 'fines', path: '/Fines' },
-                { title: 'submit request', path: '/SubmitRequest' },
-                { title: 'reserve books', path: '/ReserveBooksS' }
+                { title: 'fines', path: '/Fines' }
+                // { title: 'submit request', path: '/SubmitRequest' },
+                // { title: 'reserve books', path: '/ReserveBooksS' }
             ];
         } else if (UserStore.usertype === 'professor') {
             navLinks = [
