@@ -8,7 +8,7 @@ function App() {
             <Header />
             <div className='App'>
                 <header className='App-header'>
-                    <p>Welcome to Hogwarts.</p>
+                    <p>Welcome to the Hogwarts Library.</p>
                 </header>
             </div>
         </>

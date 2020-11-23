@@ -109,7 +109,6 @@ const Header: React.FC = () => {
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 open={isMenuOpen}
                 onClose={handleMenuClose}>
-                <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         );
