@@ -29,7 +29,7 @@ const columns: ColDef[] = [
     { field: 'pages', headerName: 'Pages', width: 100 },
     { field: 'edition', headerName: 'Edition', width: 130 },
     { field: 'express', headerName: 'Status', width: 100 },
-    { field: 'category', headerName: 'Category', width: 150 },
+    { field: 'category', headerName: 'Category', width: 250 },
     {
         field: 'holds',
         headerName: 'Holds',
