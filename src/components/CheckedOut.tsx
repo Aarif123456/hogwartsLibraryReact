@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Header from './Header';
-import { DataGrid, ColDef } from '@material-ui/data-grid';
+import { DataGrid, ColDef, RowId } from '@material-ui/data-grid';
 import { Button, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { runInAction } from 'mobx';
 import { instance } from '../constants';
@@ -31,22 +31,59 @@ const columns: ColDef[] = [
     { field: 'renewedTime', headerName: 'Times Renewed', width: 150 }
 ];
 
-let rows = [
+let message = '';
+
+let rows: Book[] = [
     {
         id: 1,
-        holdID: null,
-        bookISBN: '',
         bookName: '',
         author: '',
-        edition: '',
-        dueDate: '',
+        dueDate: null,
         holds: null,
-        renewedTime: null
+        renewedTime: null,
+        bookBarcode: null
     }
 ];
 
+interface Book {
+    id: number;
+    bookName: string;
+    author: string;
+    renewedTime?: number | null;
+    dueDate?: Date | null;
+    holds?: number | null;
+    bookBarcode?: number | null;
+}
+
 export const CheckedOut: React.FC = () => {
-    const [dataRows, setDataRows] = React.useState(rows);
+    const [dataRows, setDataRows] = React.useState<Book[]>(rows);
+    const [selections, setSelection] = React.useState<RowId[]>([]);
+
+    const renewBooks = () => {
+        console.log(selections);
+        for (const selection of selections) {
+            const select = (selection as number) - 1;
+            console.log(select);
+            console.log(dataRows[select]);
+            renewBook(dataRows[select]);
+        }
+    };
+    const renewBook = (book: Book) => {
+        const bookBarcode = book.bookBarcode;
+        const bookFormData = new FormData();
+        bookFormData.append('bookBarcode', String(bookBarcode));
+        console.log(book);
+        instance
+            .post('library/renewBooks', bookFormData)
+            .then(function(response: AxiosResponse) {
+                console.log(response.data);
+                message = response.data;
+            })
+            .catch(function(error) {
+                console.log(error);
+                message = error;
+            });
+    };
 
     useEffect(() => {
         setDataRows(rows);
@@ -66,14 +103,12 @@ export const CheckedOut: React.FC = () => {
                         rows = [
                             {
                                 id: 1,
-                                holdID: null,
-                                bookISBN: '',
                                 bookName: '',
                                 author: '',
-                                edition: '',
-                                dueDate: '',
+                                dueDate: null,
                                 holds: null,
-                                renewedTime: null
+                                renewedTime: null,
+                                bookBarcode: null
                             }
                         ];
                         setDataRows(rows);
@@ -84,7 +119,11 @@ export const CheckedOut: React.FC = () => {
                     console.log(error);
                 });
         });
-    }, []);
+        if (message !== '') {
+            alert(message);
+            message = '';
+        }
+    }, [renewBooks]);
 
     const classes = useStyles();
     return (
@@ -95,12 +134,20 @@ export const CheckedOut: React.FC = () => {
                     <h3>Checked Out Books</h3>
                 </header>
             </div>
-            <Button variant='contained' color='primary' className={classes.selectEmpty}>
+            <Button variant='contained' color='primary' className={classes.selectEmpty} onClick={renewBooks}>
                 Renew Date
             </Button>
 
             <div style={{ height: 650, width: '100%' }}>
-                <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />
+                <DataGrid
+                    rows={dataRows}
+                    columns={columns}
+                    pageSize={10}
+                    checkboxSelection
+                    onSelectionChange={newSelection => {
+                        setSelection(newSelection.rowIds);
+                    }}
+                />
             </div>
         </>
     );
