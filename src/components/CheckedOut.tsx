@@ -86,7 +86,6 @@ export const CheckedOut: React.FC = () => {
     };
 
     useEffect(() => {
-        setDataRows(rows);
         runInAction(() => {
             instance
                 .post('user/userCheckedOut')
