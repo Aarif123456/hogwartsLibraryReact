@@ -20,7 +20,9 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "jsx": "react"
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": true
   },
   "include": [
     "src"

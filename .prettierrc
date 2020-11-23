@@ -1,6 +1,6 @@
 {
     "bracketSpacing": true,
-    "endOfLine": "lf",
+    "endOfLine": "auto",
     "jsxBracketSameLine": true,
     "jsxSingleQuote": true,
     "printWidth": 140,

@@ -2,17 +2,15 @@ import React from 'react';
 import './App.css';
 import Header from './Header';
 
-function App() {
+export function Returns() {
     return (
         <>
             <Header />
             <div className='App'>
                 <header className='App-header'>
-                    <p>Welcome to Hogwarts.</p>
+                    <p>Returns</p>
                 </header>
             </div>
         </>
     );
 }
-
-export default App;
