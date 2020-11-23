@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import Header from './Header';
-import { DataGrid, ColDef } from '@material-ui/data-grid';
+import { DataGrid, ColDef, RowId } from '@material-ui/data-grid';
 import { Button, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { runInAction } from 'mobx';
 import { instance } from '../constants';
 import { AxiosResponse } from 'axios';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,7 +35,7 @@ const columns: ColDef[] = [
     { field: 'holdExpiryDate', headerName: 'Expiry Date', width: 150 }
 ];
 
-let rows = [
+let rows: Book[] = [
     {
         id: 1,
         holdID: null,
@@ -48,8 +49,52 @@ let rows = [
     }
 ];
 
+interface Book {
+    id: number;
+    bookISBN: string;
+    bookName: string;
+    author: string;
+    holdID?: number | null;
+    edition: string;
+    holdExpiryDate?: Date | null;
+    category: string;
+    holds?: number | null;
+}
+
 export const Holds: React.FC = () => {
-    const [dataRows, setDataRows] = React.useState(rows);
+    const [dataRows, setDataRows] = React.useState<Book[]>(rows);
+    const [selections, setSelection] = React.useState<RowId[]>([]);
+    let message = '';
+    const history = useHistory();
+
+    const cancelHoldBooks = () => {
+        console.log(selections);
+        for (const selection of selections) {
+            const select = (selection as number) - 1;
+            console.log(select);
+            console.log(dataRows[select]);
+            cancelHoldBook(dataRows[select]);
+        }
+        history.push('/Holds');
+        alert(message);
+        message = '';
+    };
+    const cancelHoldBook = (book: Book) => {
+        const holdID = book.holdID;
+        const holdFormData = new FormData();
+        holdFormData.append('holdID', String(holdID));
+        console.log(book);
+        instance
+            .post('library/cancelHoldBook', holdFormData)
+            .then(function(response: AxiosResponse) {
+                console.log(response.data);
+                message = response.data;
+            })
+            .catch(function(error) {
+                console.log(error);
+                message = error;
+            });
+    };
 
     useEffect(() => {
         setDataRows(rows);
@@ -97,12 +142,20 @@ export const Holds: React.FC = () => {
                     <h3>Holds</h3>
                 </header>
             </div>
-            <Button variant='contained' color='primary' className={classes.selectEmpty}>
+            <Button variant='contained' color='primary' className={classes.selectEmpty} onClick={cancelHoldBooks}>
                 Cancel Hold
             </Button>
 
             <div style={{ height: 650, width: '100%' }}>
-                <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />
+                <DataGrid
+                    rows={dataRows}
+                    columns={columns}
+                    pageSize={10}
+                    checkboxSelection
+                    onSelectionChange={newSelection => {
+                        setSelection(newSelection.rowIds);
+                    }}
+                />
             </div>
         </>
     );

@@ -4,6 +4,7 @@ import { DataGrid, ColDef, RowId } from '@material-ui/data-grid';
 import { Button, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField, Theme } from '@material-ui/core';
 import { AxiosResponse } from 'axios';
 import { instance } from '../constants';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -67,6 +68,8 @@ export const BrowseCatalogue: React.FC = () => {
     const [searchKeyword, setSearchKeyword] = React.useState('');
     const [dataRows, setDataRows] = React.useState<Book[]>(rows);
     const [selections, setSelection] = React.useState<RowId[]>([]);
+    let message = '';
+    const history = useHistory();
     const FormData = require('form-data');
     const form = new FormData();
     form.append('searchType', searchType);
@@ -117,10 +120,14 @@ export const BrowseCatalogue: React.FC = () => {
     const holdBooks = () => {
         console.log(selections);
         for (const selection of selections) {
-            console.log(selection);
-            console.log(rows[selection as number]);
-            holdBook(rows[selection as number]);
+            const select = (selection as number) - 1;
+            console.log(select);
+            console.log(dataRows[select]);
+            holdBook(dataRows[select]);
         }
+        history.push('/BrowseCatalogue');
+        alert(message);
+        message = '';
     };
     const holdBook = (book: Book) => {
         const bookISBN = book.bookISBN;
@@ -131,10 +138,11 @@ export const BrowseCatalogue: React.FC = () => {
             .post('library/holdBooks', holdFormData)
             .then(function(response: AxiosResponse) {
                 console.log(response.data);
-                rows = response.data;
+                message = response.data;
             })
             .catch(function(error) {
                 console.log(error);
+                message = error;
             });
     };
     React.useEffect(() => {
