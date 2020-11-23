@@ -50,16 +50,6 @@ const Fines = () => {
                         });
                         setDataRows(rows);
                     } else {
-                        rows = [
-                            {
-                                id: 1,
-                                transactionID: null,
-                                bookName: '',
-                                author: '',
-                                returnDate: '',
-                                fine: null
-                            }
-                        ];
                         setDataRows(rows);
                         console.log(response.data);
                     }
@@ -77,10 +67,10 @@ const Fines = () => {
                 <header className='App-header'>
                     <h3>Fines</h3>
                 </header>
-                <p>You have currently {dataRows[0].transactionID === null ? 0 : dataRows.length} fine(!)</p>
+                <p>You have currently {dataRows[0].transactionID === null ? 0 : dataRows.length} fine(s)!</p>
             </div>
             <div style={{ height: 650, width: '100%' }}>
-                <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />
+                {dataRows.length > 1 && <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />}
             </div>
         </>
     );

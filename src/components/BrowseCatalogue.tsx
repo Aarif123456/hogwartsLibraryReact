@@ -1,10 +1,9 @@
 import React from 'react';
 import Header from './Header';
-import { DataGrid, ColDef } from '@material-ui/data-grid';
+import { DataGrid, ColDef, RowId } from '@material-ui/data-grid';
 import { Button, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField, Theme } from '@material-ui/core';
-import { runInAction } from 'mobx';
-import Axios, { AxiosResponse } from 'axios';
-import { API } from '../constants';
+import { AxiosResponse } from 'axios';
+import { instance } from '../constants';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,7 +28,7 @@ const columns: ColDef[] = [
     { field: 'pages', headerName: 'Pages', width: 100 },
     { field: 'edition', headerName: 'Edition', width: 130 },
     { field: 'express', headerName: 'Status', width: 100 },
-    { field: 'category', headerName: 'Category', width: 150 },
+    { field: 'category', headerName: 'Category', width: 250 },
     {
         field: 'holds',
         headerName: 'Holds',
@@ -37,7 +36,7 @@ const columns: ColDef[] = [
     }
 ];
 
-let rows = [
+let rows: Book[] = [
     {
         id: 1,
         bookISBN: '',
@@ -51,12 +50,23 @@ let rows = [
     }
 ];
 
+interface Book {
+    id: number;
+    bookISBN: string;
+    bookName: string;
+    author: string;
+    pages?: number | null;
+    edition: string;
+    express?: boolean | null;
+    category: string;
+    holds?: number | null;
+}
 export const BrowseCatalogue: React.FC = () => {
     const classes = useStyles();
     const [searchType, setSearchType] = React.useState('');
     const [searchKeyword, setSearchKeyword] = React.useState('');
-    const [dataRows, setDataRows] = React.useState(rows);
-
+    const [dataRows, setDataRows] = React.useState<Book[]>(rows);
+    const [selections, setSelection] = React.useState<RowId[]>([]);
     const FormData = require('form-data');
     const form = new FormData();
     form.append('searchType', searchType);
@@ -71,40 +81,62 @@ export const BrowseCatalogue: React.FC = () => {
     };
 
     const doSearch = () => {
-        runInAction(() => {
-            Axios.post(API + 'library/searchCatalogue', form)
-                .then(function(response: AxiosResponse) {
-                    if (response.data !== 'No rows') {
-                        console.log(response.data);
-                        rows = response.data;
-                        rows.forEach(function(item, index) {
-                            item.id = index + 1;
-                        });
-                        setDataRows(rows);
-                    } else {
-                        rows = [
-                            {
-                                id: 1,
-                                bookISBN: '',
-                                bookName: '',
-                                author: '',
-                                pages: null,
-                                edition: '',
-                                express: null,
-                                category: '',
-                                holds: null
-                            }
-                        ];
-                        setDataRows(rows);
-                        console.log(response.data);
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        });
+        instance
+            .post('library/searchCatalogue', form)
+            .then(function(response: AxiosResponse) {
+                if (response.data !== 'No rows') {
+                    console.log(response.data);
+                    rows = response.data;
+                    rows.forEach(function(item, index) {
+                        item.id = index + 1;
+                    });
+                    setDataRows(rows);
+                } else {
+                    rows = [
+                        {
+                            id: 1,
+                            bookISBN: '',
+                            bookName: '',
+                            author: '',
+                            pages: null,
+                            edition: '',
+                            express: null,
+                            category: '',
+                            holds: null
+                        }
+                    ];
+                    setDataRows(rows);
+                    console.log(response.data);
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
     };
 
+    const holdBooks = () => {
+        console.log(selections);
+        for (const selection of selections) {
+            console.log(selection);
+            console.log(rows[selection as number]);
+            holdBook(rows[selection as number]);
+        }
+    };
+    const holdBook = (book: Book) => {
+        const bookISBN = book.bookISBN;
+        const holdFormData = new FormData();
+        holdFormData.append('bookISBN', bookISBN);
+        console.log(selections);
+        instance
+            .post('library/holdBooks', holdFormData)
+            .then(function(response: AxiosResponse) {
+                console.log(response.data);
+                rows = response.data;
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    };
     React.useEffect(() => {
         if (searchType !== '') {
             doSearch();
@@ -137,11 +169,19 @@ export const BrowseCatalogue: React.FC = () => {
                 className={classes.textField}
                 onChange={handleSearch}
             />
-            <Button variant='contained' color='primary' className={classes.selectEmpty}>
+            <Button variant='contained' color='primary' className={classes.selectEmpty} onClick={holdBooks}>
                 Hold
             </Button>
             <div style={{ height: 650, width: '100%' }}>
-                <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />
+                <DataGrid
+                    rows={dataRows}
+                    columns={columns}
+                    pageSize={10}
+                    checkboxSelection
+                    onSelectionChange={newSelection => {
+                        setSelection(newSelection.rowIds);
+                    }}
+                />
             </div>
         </>
     );
