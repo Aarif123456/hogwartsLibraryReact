@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-    height: 6vmin;
+    height: 4vmin;
 }
 
 .App-header {
@@ -12,6 +12,20 @@
     align-items: center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
+}
+
+.App-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333333;
+}
+
+.App-contact {
+    text-align: start;
+    padding-left: 5vmax;
 }
 
 .App-link {
