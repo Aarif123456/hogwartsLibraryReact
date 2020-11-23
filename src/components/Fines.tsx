@@ -77,7 +77,7 @@ const Fines = () => {
                 <header className='App-header'>
                     <h3>Fines</h3>
                 </header>
-                <p>You have currently {dataRows[0].transactionID === null ? 0 : dataRows.length} fines!</p>
+                <p>You have currently {dataRows[0].transactionID === null ? 0 : dataRows.length} fine(!)</p>
             </div>
             <div style={{ height: 650, width: '100%' }}>
                 <DataGrid rows={dataRows} columns={columns} pageSize={10} checkboxSelection />
