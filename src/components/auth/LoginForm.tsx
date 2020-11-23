@@ -72,7 +72,7 @@ const LoginForm: React.FC = () => {
                     if (response.data.success) {
                         UserStore.storeLoggedIn(response.data.success);
                         UserStore.username = username;
-                        UserStore.usertype = userType;
+                        UserStore.usertype = response.data.userType;
                         console.log(response.data);
                         history.push('/');
                     } else {
