@@ -154,7 +154,7 @@ const Header: React.FC = () => {
         navLinks = [
             { title: 'browse catalogue', path: '/BrowseCatalogue' },
             { title: 'house fines', path: '/HouseFines' },
-            { title: 'reading list', path: '/ReadingList' },
+            // { title: 'reading list', path: '/ReadingList' },
             { title: 'contact', path: '/ContactUs' },
             { title: 'about', path: '/AboutUs' }
         ];
