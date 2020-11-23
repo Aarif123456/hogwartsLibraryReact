@@ -92,11 +92,11 @@ export const CheckedOut: React.FC = () => {
             <Header />
             <div className='App'>
                 <header className='App-header'>
-                    <h3>Holds</h3>
+                    <h3>Checked Out Books</h3>
                 </header>
             </div>
             <Button variant='contained' color='primary' className={classes.selectEmpty}>
-                Cancel Hold
+                Renew Date
             </Button>
 
             <div style={{ height: 650, width: '100%' }}>
