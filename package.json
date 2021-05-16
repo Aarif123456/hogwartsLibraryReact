@@ -8,7 +8,7 @@
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.1.10",
+    "@testing-library/user-event": "^12.8.3",
     "@types/react-router-dom": "^5.1.6",
     "axios": "^0.21.0",
     "mobx": "^6.3.0",
