@@ -11,7 +11,7 @@
     "@testing-library/user-event": "^12.8.3",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.0",
-    "mobx": "^6.3.0",
+    "mobx": "^6.9.1",
     "mobx-react": "^7.1.0",
     "npm": "^7.11.1",
     "react": "^17.0.2",
