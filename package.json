@@ -10,7 +10,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "@types/react-router-dom": "^5.1.7",
-    "axios": "^0.21.0",
+    "axios": "^1.6.0",
     "mobx": "^6.3.0",
     "mobx-react": "^7.1.0",
     "npm": "^7.11.1",
